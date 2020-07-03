@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/main-page.css}">
+    <link rel="stylesheet" th:href="@{/css/custom-select.css}">
+    <title>Exchange: Main Page</title>
+</head>
+
+<body>
+<header class="main-header">
+    <a th:href="@{/}" class="main-header-logo"><img th:src="@{/img/iba-tech-logo-white.svg}" alt="IBA Tech Academy"></a>
+    <div class="main-header-wrapper">
+        <div class="main-header-profile-wrapper">
+
+        </div>
+    </div>
+</header>
+
+<section class="exchange">
+    <div class="exchange-content">
+        <h3 class="exchange-content-heading">
+            Exchange money
+        </h3>
+
+        <form class="exchange-form" method="POST">
+
+            <div class="form-columns">
+                <div class="exchange-form-column">
+                        <span class="select-name">
+                            From
+                        </span>
+                    <div>
+                        <select name="base" class="currency-input" >
+                            <option value="" disabled selected hidden th:text="${object.base_ccy != null} ? ${object.base_ccy} : 'Choose a currency'"></option>
+                            <option th:each="curr : ${currencies}" th:text="${curr}"></option>
+                        </select>
+                    </div>
+                    <br>
+                    <div id="exchange-from-result" class="exchange-result">
+                        <input type="text" class="currency-input" th:value="${amount}" name="amount"
+                               placeholder="Enter amount to convert..">
+                    </div>
+                </div>
+
+                <div class="exchange-form-column">
+                        <span class="select-name">
+                            To
+                        </span>
+                    <div >
+                        <select class="currency-input" name="quote">
+                            <option value="" disabled selected hidden th:text="${object.quote_ccy != null} ? ${object.quote_ccy} : 'Choose a currency'"></option>
+                            <option th:each="curr : ${currencies}" th:text="${curr}"></option>
+                        </select>
+                    </div>
+                    <br>
+                    <div id="exchange-to-result" class="exchange-result">
+                        <input type="text" class="currency-input" th:value="${result}" placeholder="000">
+                    </div>
+                </div>
+            </div>
+            <h3 style="color: red" th:text="${msg}"></h3>
+
+            <h3 style="color: #a94442" th:text="${object.date}"></h3>
+            <div class="form-footer">
+                <div class="rate"><h1 th:text="${left != null} ? ${left} : '1base/quote'" ></h1></div>
+                <input type="submit" class="reset-section-container-form-login" value="Exchange"/>
+                <div class="rate"><h1 th:text="${right != null} ? ${right} : '1quote/base'" ></h1></div>
+            </div>
+
+        </form>
+    </div>
+
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript"
+        src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js"></script>
+<script th:src="@{/js/currency-select.js}"></script>
+</body>
+</html>
