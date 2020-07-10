@@ -1,6 +1,9 @@
 package com.xe.service;
 
+
 import com.xe.entity.User;
+
+import com.xe.entity.api.Exchange;
 import com.xe.repo.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +11,7 @@ import java.util.Optional;
 
 
 @Service
-public class UserService  {
+public class UserService {
 
     private final UserRepository userRepository;
 
@@ -17,7 +20,13 @@ public class UserService  {
     }
 
     public void addUser(User user) {
-         userRepository.save(user);
+        userRepository.save(user);
+    }
+
+    public void addExchangeTest(long id, Exchange exchange) {
+        User user = userRepository.getOne(id);
+        user.getExchanges().add(exchange);
+        addUser(user);
     }
 
     public Optional<User> findByEmail(String email) {
@@ -25,7 +34,7 @@ public class UserService  {
     }
 
     public Optional<User> findByEmailAndPassword(String email, String password) {
-        return  userRepository.findByEmailAndPassword(email, password);
+        return userRepository.findByEmailAndPassword(email, password);
     }
 
     public void updatePassword(String password, Long userId) {

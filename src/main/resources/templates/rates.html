@@ -20,7 +20,7 @@
                 <span class="main-header-username" th:text="${session.user.fullName}"></span>
                 <div class="log-out-block">
                     <img th:src="@{/img/log-out-icon.svg}" alt="Log out">
-                    <a th:href="@{/login }" class="log-out-btn">Log out</a>
+                    <a class="log-out-btn" th:href="@{/logout}">Log out</a>
                 </div>
             </div>
             <img class="main-header-user-icon" th:src="@{/img/user-icon-with-background.svg}" alt="User Icon">
@@ -33,81 +33,22 @@
         <h3 class="exchange-content-heading">
             Exchange rate dates
         </h3>
-        <p class="exchange-content-subheading">
-            12 June 2020/21 June 2020
+        <p class="exchange-content-subheading"
+           th:text="${obj.getStart_at()+'/' + obj.getEnd_at()}">
         </p>
         <ul class="rates-list">
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    21 June 2020
+            <li class="rates-item" th:each=" rates : ${obj.getRates()}">
+                <div class="rate" th:each="value : ${rates.getValue()}"
+                     th:text="${ '1' + obj.getBase() + ' / ' + #numbers.formatDecimal(value.getValue(), 1, 'COMMA', 4, 'POINT') + value.getKey()}">
+                    1USD/0.89EUR
+                </div>
+                <p th:text="${rates.getKey()}" class="rate-date">
                 </p>
-                <div class="rate">1EUR/1.12USD</div>
+                <div class="rate" th:each="value : ${rates.getValue()}"
+                     th:text=" ${'1' + value.getKey() + ' / ' +#numbers.formatDecimal(1/value.getValue(), 1, 'COMMA', 4, 'POINT')+ obj.getBase()}">
+                    1EUR/1.12USD
+                </div>
             </li>
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    20 June 2020
-                </p>
-                <div class="rate">1EUR/1.12USD</div>
-            </li>
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    19 June 2020
-                </p>
-                <div class="rate">1EUR/1.12USD</div>
-            </li>
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    18 June 2020
-                </p>
-                <div class="rate">1EUR/1.12USD</div>
-            </li>
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    17 June 2020
-                </p>
-                <div class="rate">1EUR/1.12USD</div>
-            </li>
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    16 June 2020
-                </p>
-                <div class="rate">1EUR/1.12USD</div>
-            </li>
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    15 June 2020
-                </p>
-                <div class="rate">1EUR/1.12USD</div>
-            </li>
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    14 June 2020
-                </p>
-                <div class="rate">1EUR/1.12USD</div>
-            </li>
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    13 June 2020
-                </p>
-                <div class="rate">1EUR/1.12USD</div>
-            </li>
-            <li class="rates-item">
-                <div class="rate">1USD/0.89EUR</div>
-                <p class="rate-date">
-                    12 June 2020
-                </p>
-                <div class="rate">1EUR/1.12USD</div>
-            </li>
-
         </ul>
         <a th:href="@{/main-page-authorized}" class="reset-section-container-form-login button-rates">Go
             back</a>

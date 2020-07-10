@@ -1,6 +1,7 @@
 package com.xe.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.xe.entity.api.Exchange;
 import com.xe.validation.FieldMatch;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,9 +15,7 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@FieldMatch.List({
-        @FieldMatch(first = "password", second = "matchingPassword", message = "Password fields must match")
-})
+@FieldMatch(first = "password", second = "matchingPassword", message = "Password fields must match")
 public class User {
 
     @Id
@@ -24,18 +23,18 @@ public class User {
     @Column(name = "user_id")
     private long id;
 
-    @NotNull(message = "Full Name cannot be null")
+    @NotNull(message = "Full Name cannot be empty")
     @Size(min = 1)
     private String fullName;
 
-    @NotNull(message = "Password cannot be null")
-    @Size(min = 3, message = "must be greater than 3 digits")
+    @NotNull(message = "Password cannot be empty")
+    @Size(min = 3, message = "Password must be at least three characters long")
     private String password;
 
     @Transient
     private String matchingPassword;
 
-    @NotNull(message = "Email cannot be null")
+    @NotNull(message = "Email cannot be empty")
     @Size(min = 1)
     private String email;
 
