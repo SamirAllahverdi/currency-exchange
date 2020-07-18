@@ -6,7 +6,6 @@ import com.xe.entity.User;
 import com.xe.repo.PasswordResetTokenRepository;
 import com.xe.service.UserService;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -29,7 +28,7 @@ public class PasswordResetController {
         this.tokenRepository = tokenRepository;
     }
 
-    @ModelAttribute("passwordResetFrom")
+    @ModelAttribute("passwordResetForm")
     public PasswordResetDto passwordReset() {
         return new PasswordResetDto();
     }
@@ -39,6 +38,7 @@ public class PasswordResetController {
                                            Model model) {
 
         PasswordResetToken resetToken = tokenRepository.findByToken(token);
+
         if (resetToken == null) {
             model.addAttribute("error","Could not find password reset token.");
         } else if (resetToken.isExpired()) {
@@ -47,7 +47,7 @@ public class PasswordResetController {
             model.addAttribute("token", resetToken.getToken());
         }
 
-        model.addAttribute("passwordResetFrom", new PasswordResetDto());
+        model.addAttribute("passwordResetForm", new PasswordResetDto());
         return "reset-password";
     }
 
@@ -55,13 +55,12 @@ public class PasswordResetController {
     @Transactional
     public String handlePasswordReset(@Valid @ModelAttribute("passwordResetForm") PasswordResetDto form,
                                       BindingResult result,
-                                      RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-//            redirectAttributes.addFlashAttribute(BindingResult.class.getName() + ".passwordResetForm", result);
-//            redirectAttributes.addFlashAttribute("passwordResetForm", form);
-//            return "reset-password";
-            return "redirect:/reset-password?token=" + form.getToken();
+                                      RedirectAttributes ra) {
 
+        if (result.hasErrors()) {
+            ra.addFlashAttribute("error", "Please follow the password policy: \n" +
+                    "(Password must be at least 3 characters long and fields must match)");
+            return "redirect:/reset-password?token=" + form.getToken();
         }
 
         PasswordResetToken token = tokenRepository.findByToken(form.getToken());
@@ -70,10 +69,10 @@ public class PasswordResetController {
         userService.updatePassword(updatedPassword, user.getId());
         tokenRepository.delete(token);
 
-        redirectAttributes.addFlashAttribute("success","Password successfully reset, please log in to continue");
+        ra.addFlashAttribute("success", "Password successfully reset, please log in to continue");
         log.info("Successfully registered");
 
-        return "redirect:/login";
+        return "redirect:/index";
     }
 }
 

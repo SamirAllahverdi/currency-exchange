@@ -1,45 +1,46 @@
 package com.xe.service;
 
-
 import com.xe.entity.User;
-
 import com.xe.entity.api.Exchange;
 import com.xe.repo.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder enc;
 
-    public UserService(UserRepository userRepository) {
+
+    public UserService(UserRepository userRepository, PasswordEncoder enc) {
         this.userRepository = userRepository;
+        this.enc = enc;
     }
 
     public void addUser(User user) {
+        String encode = enc.encode(user.getPassword());
+        user.setPassword(encode);
+        user.setMatchingPassword(encode);
+        user.setRoles("USER");
         userRepository.save(user);
     }
 
-    public void addExchangeTest(long id, Exchange exchange) {
-        User user = userRepository.getOne(id);
-        user.getExchanges().add(exchange);
-        addUser(user);
+    public void addExchange(String email, Exchange ex) {
+        Optional<User> byEmail = userRepository.findByEmail(email);
+        User user = byEmail.orElseThrow(RuntimeException::new);
+        user.getExchanges().add(ex);
+        userRepository.save(user);
     }
 
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public Optional<User> findByEmailAndPassword(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password);
-    }
-
     public void updatePassword(String password, Long userId) {
-        userRepository.updatePassword(password, userId);
+        userRepository.updatePassword(enc.encode(password), userId);
     }
-
 
 }

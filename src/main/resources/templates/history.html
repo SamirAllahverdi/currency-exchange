@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" th:href="@{/css/rates.css}">
+	<link rel="stylesheet" th:href="@{/css/custom-select.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main2.css}">
+</head>
+<body>
+<header class="main-header">
+	<a th:href="@{/main-page-authorized}" class="main-header-logo"><img th:src="@{/img/iba-tech-logo-white.svg}"
+																	   alt="IBA Tech Academy"></a>
+	<div class="main-header-wrapper" >
+		<div class="main-header-profile-wrapper">
+			<div class="main-header-profile-credentials">
+				<span class="main-header-username" th:text="${#authentication.getPrincipal().getFullName()}"></span>
+				<div class="log-out-block">
+					<img th:src="@{/img/log-out-icon.svg}" alt="Log out">
+					<a class="log-out-btn" th:href="@{/logout}">Log out</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div class="limiter">
+	<div class="container-table100">
+		<div class="wrap-table100">
+			<div class="table100">
+				<a th:href="@{/main-page-authorized}">Go back</a>
+				<table>
+					<thead>
+					<thead>
+					<tr class="table100-head">
+						<th class="column1">Base Currency</th>
+						<th class="column2">Quote Currency</th>
+						<th class="column3">Rate</th>
+						<th class="column4">Amount</th>
+						<th class="column5">Result</th>
+						<th class="column6">Date</th>
+					</tr>
+					</thead>
+
+					<tbody th:each="list : ${user.getExchanges()}">
+
+					<tr>
+						<td class="column1" th:text="${list.getBase_ccy()}">
+
+						</td>
+						<td class="column2" th:text="${list.getQuote_ccy()}">
+
+						</td>
+						<td class="column3" th:text="${list.getRate()}">
+
+						</td>
+						<td class="column4" th:text="${list.getAmount()}">
+
+						</td>
+						<td class="column5" th:text="${list.getResult()}">
+
+						</td>
+
+						<td class="column6" th:text="${list.getLocalDate()}">
+
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</body>
+</html>

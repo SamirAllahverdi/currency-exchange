@@ -43,23 +43,19 @@ public class PasswordForgotController {
         return new PasswordForgotDto();
     }
 
-
     @GetMapping
     public String showForgotPassword() {
         log.info("GET -> /forgot-password");
         return "forgot-password";
     }
 
-
     @PostMapping
     public String processForgotPasswordForm(
             @ModelAttribute("forgotPasswordForm") @Valid PasswordForgotDto from,
             BindingResult result,
-            HttpServletRequest request) {
+            HttpServletRequest request) throws Throwable {
 
-        if (result.hasErrors()) {
-            return "forgot-password";
-        }
+        if (result.hasErrors()) return "forgot-password";
 
         Optional<User> user = userService.findByEmail(from.getEmail());
         if (!user.isPresent()) {
@@ -68,24 +64,33 @@ public class PasswordForgotController {
         }
 
         PasswordResetToken token = new PasswordResetToken();
+
         token.setToken(UUID.randomUUID().toString());
-        token.setUser(user.orElseThrow(() -> {throw new UserNotFoundException("User not found ");}));
+        token.setUser(user.orElseThrow(() -> {
+            throw new UserNotFoundException("User not found ");
+        }));
+
         token.setExpiryDate(10);
         tokenRepository.save(token);
 
         Mail mail = new Mail();
         mail.setFrom("no-reply@memorynotfound.com");
-        mail.setTo(user.orElseThrow(() -> {throw new UserNotFoundException("User not found");}).getEmail());
+        mail.setTo(user.orElseThrow(() -> {
+            throw new UserNotFoundException("User not found");
+        }).getEmail());
         mail.setSubject("Password reset request");
 
         Map<String, Object> model = new HashMap<>();
 
         model.put("token", token);
-        model.put("user", user.orElseThrow(() -> {throw new UserNotFoundException("User not found");}));
+        model.put("user", user.orElseThrow(() -> {
+            throw new UserNotFoundException("User not found");
+        }));
         model.put("signature", "https://memorynotfound.com");
         String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
         model.put("resetUrl", url + "/reset-password?token=" + token.getToken());
         mail.setModel(model);
+
         emailService.sendEmail(mail);
 
         return "redirect:/forgot-password?success";

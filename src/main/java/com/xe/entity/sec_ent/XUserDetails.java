@@ -1,4 +1,4 @@
-package com.xe.entity.sec_api;
+package com.xe.entity.sec_ent;
 
 import com.xe.entity.api.Exchange;
 import lombok.Getter;
@@ -24,13 +24,15 @@ public class XUserDetails implements UserDetails {
 
     private  String[] roles;
 
-    public XUserDetails(long id, String fullName, String password, String email, Collection<Exchange> exchanges) {
+    public XUserDetails(long id, String fullName, String password, String email, Collection<Exchange> exchanges, String[] roles) {
         this.id = id;
         this.fullName = fullName;
         this.password = password;
         this.email = email;
         this.exchanges =exchanges;
+        this.roles =roles;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

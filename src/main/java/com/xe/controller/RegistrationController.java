@@ -43,25 +43,25 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String handle_post(
-            @Valid @ModelAttribute("user") User user,
-            BindingResult result,
-            RedirectAttributes ra) {
+    public String handle_post(@Valid @ModelAttribute("user") User user,
+                              BindingResult result,
+                              RedirectAttributes ra) {
 
         if (result.hasErrors()) return "registration";
 
         Optional<User> existing = userService.findByEmail(user.getEmail());
-        if (existing.isPresent()){
+        if (existing.isPresent()) {
             result.rejectValue("email", null, "There is already an account registered with that email");
         }
 
         if (result.hasErrors()) return "registration";
 
         userService.addUser(user);
-        ra.addFlashAttribute("success","Registration is successful, please log in to continue");
+
+        ra.addFlashAttribute("success", "Registration is successful, please log in to continue");
         log.info("Successfully registered");
 
-        return "redirect:/login";
+        return "redirect:/index";
     }
 
 }
