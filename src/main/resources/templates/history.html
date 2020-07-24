@@ -5,6 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
 	<link rel="stylesheet" th:href="@{/css/rates.css}">
 	<link rel="stylesheet" th:href="@{/css/custom-select.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/css/main2.css}">
@@ -16,7 +17,7 @@
 	<div class="main-header-wrapper" >
 		<div class="main-header-profile-wrapper">
 			<div class="main-header-profile-credentials">
-				<span class="main-header-username" th:text="${#authentication.getPrincipal().getFullName()}"></span>
+				<span class="main-header-username" th:text="${name}"></span>
 				<div class="log-out-block">
 					<img th:src="@{/img/log-out-icon.svg}" alt="Log out">
 					<a class="log-out-btn" th:href="@{/logout}">Log out</a>
@@ -34,38 +35,25 @@
 				<table>
 					<thead>
 					<thead>
-					<tr class="table100-head">
-						<th class="column1">Base Currency</th>
-						<th class="column2">Quote Currency</th>
-						<th class="column3">Rate</th>
-						<th class="column4">Amount</th>
-						<th class="column5">Result</th>
-						<th class="column6">Date</th>
-					</tr>
+				<tr class="table100-head">
+					<th class="column1">Base Currency</th>
+					<th class="column1">Quote Currency</th>
+					<th class="column1">Rate</th>
+					<th class="column1">Amount</th>
+					<th class="column1">Result</th>
+					<th class="column1">Date</th>
+				</tr>
 					</thead>
 
 					<tbody th:each="list : ${user.getExchanges()}">
 
 					<tr>
-						<td class="column1" th:text="${list.getBase_ccy()}">
-
-						</td>
-						<td class="column2" th:text="${list.getQuote_ccy()}">
-
-						</td>
-						<td class="column3" th:text="${list.getRate()}">
-
-						</td>
-						<td class="column4" th:text="${list.getAmount()}">
-
-						</td>
-						<td class="column5" th:text="${list.getResult()}">
-
-						</td>
-
-						<td class="column6" th:text="${list.getLocalDate()}">
-
-						</td>
+						<td class="column1" th:text="${list.getBase_ccy()}"></td>
+						<td class="column2" th:text="${list.getQuote_ccy()}"></td>
+						<td class="column3" th:text="${list.getRate()}"></td>
+						<td class="column4" th:text="${list.getAmount()}"></td>
+						<td class="column5" th:text="${list.getResult()}"></td>
+						<td class="column6" th:text="${#temporals.format(list.getLd(), 'yyyy-MM-dd HH:mm:ss')}"></td>
 					</tr>
 					</tbody>
 				</table>

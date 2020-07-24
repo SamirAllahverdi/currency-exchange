@@ -10,7 +10,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -21,7 +20,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/index")
+                .loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .failureUrl("/login-error")
@@ -32,9 +31,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                 .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/index");
+                .logoutSuccessUrl("/login");
 
-        http.oauth2Login().defaultSuccessUrl("/main-page-authorized", true).permitAll();
-        http.headers().frameOptions().disable();
+        http
+                .oauth2Login()
+                .loginPage("/login")
+                .defaultSuccessUrl("/main-page-authorized", true)
+                .permitAll();
+
+        http
+                .headers()
+                .frameOptions()
+                .disable();
     }
 }

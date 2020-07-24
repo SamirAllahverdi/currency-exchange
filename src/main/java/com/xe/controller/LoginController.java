@@ -10,7 +10,7 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public class LoginController {
 
-    @GetMapping("index")
+    @GetMapping("login")
     public String getLogin() {
         log.info("GET -> /login");
         return "index";
@@ -20,6 +20,6 @@ public class LoginController {
     public RedirectView postLogin(RedirectAttributes ra) {
         ra.addFlashAttribute("loginError", "Login credentials are incorrect, please try again");
         log.warn("Incorrect login credentials");
-        return new RedirectView("/index");
+        return new RedirectView("/login");
     }
 }
