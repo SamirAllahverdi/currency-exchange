@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="my-repo-currency-exchange" target="9" />
+      <module name="my-repo-currency-exchange" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

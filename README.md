@@ -1,7 +1,5 @@
 # Currency Converter
-- Server.port: 
--    http://localhost:5000
-
+- Server.port: http://localhost:5000
 - This small web application allows you to quickly check the latest currency exchange rates for over 30 currency pair.
 - Built with Spring Framework and its derivatives.
 
@@ -10,6 +8,9 @@
  App is deployed to cloud platform heroku.
 
  Link to deployed version: https://calm-savannah-70817.herokuapp.com/
+ 
+ **Note:**
+ If you want to check forget password functionality **locally**, please write your email and password in application.properties.
  #
  Useful commands:
  - mvn clean - deletes the /target folder

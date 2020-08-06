@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Log4j2
@@ -35,11 +36,14 @@ public class PasswordResetController {
     public String displayResetPasswordPage(@RequestParam(required = false) String token,
                                            Model model, RedirectAttributes redirectAttributes) {
 
-        PasswordResetToken resetToken = tokenRepository.findByToken(token);
+        Optional<PasswordResetToken> tokenOpt = tokenRepository.findByToken(token);
 
-        if (resetToken == null) {
+        if (tokenOpt.isEmpty()) {
             model.addAttribute("error", "Could not find password reset token.");
-        } else if (resetToken.isExpired() || resetToken.isUsed()) {
+        }
+        PasswordResetToken resetToken = tokenOpt.orElseThrow(RuntimeException::new);
+
+        if (resetToken.isExpired() || resetToken.isUsed()) {
             redirectAttributes.addFlashAttribute("err", "Link is expired or used, please request a new password");
             return "redirect:forgot-password";
         } else {
@@ -61,8 +65,7 @@ public class PasswordResetController {
                     "(Password must be at least 3 characters long and fields must match)");
             return "redirect:/reset-password?token=" + form.getToken();
         }
-
-        PasswordResetToken token = tokenRepository.findByToken(form.getToken());
+        PasswordResetToken token = tokenRepository.findByToken(form.getToken()).orElseThrow(RuntimeException::new);
         User user = token.getUser();
         String updatedPassword = form.getPassword();
         userService.updatePassword(updatedPassword, user.getId());
