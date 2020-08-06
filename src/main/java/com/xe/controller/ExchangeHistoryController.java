@@ -33,6 +33,7 @@ public class ExchangeHistoryController {
         } else {
             model.addAttribute("user", userService.findByEmail(p.getName()).orElse(null));
         }
+
         model.addAttribute("name", UserService.getUserNameFromPrincipal(p));
         return "history";
     }

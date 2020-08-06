@@ -87,12 +87,11 @@ public class RatesController {
 
     @ExceptionHandler({Exception.class, NullPointerException.class, InvalidPeriodException.class})
     public String handleError(RedirectAttributes ra, Exception ex) {
-
-        if (ex.getClass().getSimpleName().equals("InvalidPeriodException")) {
+        if (ex instanceof InvalidPeriodException) {
             ra.addFlashAttribute("msg", "Please choose valid period \n" +
                     "(Period should be less than 10 days)");
             return "redirect:/main-page-rates";
-        } else if (ex.getClass().getSimpleName().equals("NullPointerException")) {
+        } else if (ex instanceof NullPointerException) {
             log.info("User Not Found Exception");
             return "error-404";
         } else {

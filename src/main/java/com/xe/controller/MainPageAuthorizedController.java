@@ -1,14 +1,14 @@
 package com.xe.controller;
 
+import com.xe.entity.User;
 import com.xe.entity.api.Exchange;
-import com.xe.entity.sec_ent.XUserDetails;
 import com.xe.enums.XCurrency;
 import com.xe.exception.InvalidPeriodException;
+import com.xe.exception.UserNotFoundException;
 import com.xe.service.ExchangeService;
 import com.xe.service.SocialUserService;
 import com.xe.service.UserService;
 import lombok.AllArgsConstructor;
-import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -63,7 +63,7 @@ public class MainPageAuthorizedController {
             model.addAttribute("name", user.getPrincipal().getAttribute("name"));
         } else {
             UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) p;
-            XUserDetails xUserDetails = (XUserDetails) user.getPrincipal();
+            User xUserDetails = (User) user.getPrincipal();
             model.addAttribute("name", xUserDetails.getFullName());
         }
         return "main-page-authorized";
@@ -112,10 +112,10 @@ public class MainPageAuthorizedController {
     @ExceptionHandler({Exception.class, NullPointerException.class, InvalidPeriodException.class})
     public String handleErr(RedirectAttributes ra, Exception ex) {
 
-        if (ex.getClass().getSimpleName().equals("InvalidPeriodException")) {
+        if (ex instanceof InvalidPeriodException) {
             ra.addFlashAttribute("msg", "Please choose correct date");
             return "redirect:/main-page-authorized";
-        } else if (ex.getClass().getSimpleName().equals("NullPointerException")) {
+        } else if (ex instanceof NullPointerException) {
             log.info("User Not Found Exception");
             return "error-404";
         } else {

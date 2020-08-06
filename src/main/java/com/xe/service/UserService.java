@@ -2,21 +2,23 @@ package com.xe.service;
 
 import com.xe.entity.User;
 import com.xe.entity.api.Exchange;
-import com.xe.entity.sec_ent.XUserDetails;
 import com.xe.repo.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @AllArgsConstructor
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder enc;
@@ -45,14 +47,21 @@ public class UserService {
     }
 
     public static String getUserNameFromPrincipal(Principal p) {
-
         if (p instanceof OAuth2AuthenticationToken) {
             OAuth2AuthenticationToken user = (OAuth2AuthenticationToken) p;
             return user.getPrincipal().getAttribute("name");
         } else {
-            UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) p;
-            XUserDetails xUserDetails = (XUserDetails) user.getPrincipal();
-            return xUserDetails.getFullName();
+            UsernamePasswordAuthenticationToken userToken = (UsernamePasswordAuthenticationToken) p;
+            User user = (User) userToken.getPrincipal();
+            return user.getFullName();
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
+        return userRepository.findByEmail(mail)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        String.format("User: %s isn't found in our DB with that mail", mail)
+                ));
     }
 }
