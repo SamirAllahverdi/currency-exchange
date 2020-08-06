@@ -8,6 +8,7 @@ import com.xe.exception.UserNotFoundException;
 import com.xe.repo.PasswordResetTokenRepository;
 import com.xe.service.EmailService;
 import com.xe.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -24,15 +25,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-@Value
+@AllArgsConstructor
 @Log4j2
 @Controller
 @RequestMapping("/forgot-password")
 public class PasswordForgotController {
 
-    UserService userService;
-    PasswordResetTokenRepository tokenRepository;
-    EmailService emailService;
+    private final UserService userService;
+    private final PasswordResetTokenRepository tokenRepository;
+    private final EmailService emailService;
 
     @ModelAttribute("forgotPasswordForm")
     public PasswordForgotDto forgotPasswordDto() {

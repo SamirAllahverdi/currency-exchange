@@ -4,6 +4,7 @@ import com.xe.entity.User;
 import com.xe.entity.api.Exchange;
 import com.xe.entity.sec_ent.XUserDetails;
 import com.xe.repo.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,12 +14,12 @@ import org.springframework.stereotype.Service;
 import java.security.Principal;
 import java.util.Optional;
 
-@Value
+@AllArgsConstructor
 @Service
 public class UserService {
 
-    UserRepository userRepository;
-    PasswordEncoder enc;
+    private final UserRepository userRepository;
+    private final PasswordEncoder enc;
 
     public void addUser(User user) {
         String encode = enc.encode(user.getPassword());

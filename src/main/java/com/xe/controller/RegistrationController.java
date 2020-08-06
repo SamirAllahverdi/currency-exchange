@@ -2,6 +2,7 @@ package com.xe.controller;
 
 import com.xe.entity.User;
 import com.xe.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -15,13 +16,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.Optional;
 
-@Value
+@AllArgsConstructor
 @Log4j2
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
 
-    UserService userService;
+    private final UserService userService;
 
     @ModelAttribute("user")
     public User user() {

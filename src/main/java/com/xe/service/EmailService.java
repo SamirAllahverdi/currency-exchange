@@ -1,6 +1,7 @@
 package com.xe.service;
 
 import com.xe.entity.Mail;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -12,12 +13,12 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 
-@Value
+@AllArgsConstructor
 @Service
 public class EmailService {
 
-    JavaMailSender mailSender;
-    SpringTemplateEngine templateEngine;
+    private final JavaMailSender mailSender;
+    private final SpringTemplateEngine templateEngine;
 
     public void sendEmail(Mail mail) {
         try {

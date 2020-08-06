@@ -7,6 +7,7 @@ import com.xe.exception.InvalidPeriodException;
 import com.xe.service.ExchangeService;
 import com.xe.service.SocialUserService;
 import com.xe.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,15 +30,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-@Value
+@AllArgsConstructor
 @Log4j2
 @Controller
 @RequestMapping("/main-page-authorized")
 public class MainPageAuthorizedController {
 
-    UserService userService;
-    ExchangeService exchangeService;
-    SocialUserService socialUserService;
+    private final UserService userService;
+    private final ExchangeService exchangeService;
+    private final SocialUserService socialUserService;
     private static final DecimalFormat df = new DecimalFormat("0.0000");
 
     @ModelAttribute("currencies")
@@ -54,7 +55,7 @@ public class MainPageAuthorizedController {
     }
 
     @GetMapping
-    public String get(Principal p, Model model)  {
+    public String get(Principal p, Model model) {
 
         if (p instanceof OAuth2AuthenticationToken) {
             OAuth2AuthenticationToken user = (OAuth2AuthenticationToken) p;

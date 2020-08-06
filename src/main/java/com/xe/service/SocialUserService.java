@@ -4,6 +4,7 @@ import com.xe.entity.SocialUser;
 import com.xe.entity.api.Exchange;
 import com.xe.exception.UserNotFoundException;
 import com.xe.repo.SocialUserRepository;
+import lombok.AllArgsConstructor;
 import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -12,12 +13,12 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.Optional;
 
-@Value
+@AllArgsConstructor
 @Service
 @Log4j2
 public class SocialUserService {
 
-    SocialUserRepository repo;
+    private final  SocialUserRepository repo;
 
     public void addUserSocial(OAuth2AuthenticationToken socialUser) {
 

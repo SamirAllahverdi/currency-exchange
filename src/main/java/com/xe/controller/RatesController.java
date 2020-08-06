@@ -5,6 +5,7 @@ import com.xe.enums.XCurrency;
 import com.xe.exception.InvalidPeriodException;
 import com.xe.service.ExchangeService;
 import com.xe.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.Value;
 import lombok.extern.log4j.Log4j2;
@@ -22,13 +23,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Value
+@AllArgsConstructor
 @Log4j2
 @Controller
 @RequestMapping("/main-page-rates")
 public class RatesController {
 
-    ExchangeService exchangeService;
+    private final ExchangeService exchangeService;
 
     public Date parseDate(String s) throws ParseException {
         return new SimpleDateFormat("dd MMMM yyyy", Locale.US).parse(s);
