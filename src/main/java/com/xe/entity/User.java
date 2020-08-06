@@ -60,15 +60,6 @@ public class User implements UserDetails {
         this.roles = "USER";
     }
 
-//    public String[] getRoles() {
-//        return roles == null || roles.isEmpty() ? new String[]{}
-//                : roles.split(":");
-//    }
-//
-//    public void setRoles(String roles) {
-//        this.roles = String.join(":", roles);
-//    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>() {{

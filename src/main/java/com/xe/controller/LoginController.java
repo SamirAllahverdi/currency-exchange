@@ -17,7 +17,7 @@ public class LoginController {
     }
 
     @GetMapping("login-error")
-    public RedirectView postLogin(RedirectAttributes ra) {
+    public RedirectView getLoginError(RedirectAttributes ra) {
         ra.addFlashAttribute("loginError", "Login credentials are incorrect, please try again");
         log.warn("Incorrect login credentials");
         return new RedirectView("/login");
