@@ -36,18 +36,15 @@ public class PasswordResetController {
     public String displayResetPasswordPage(@RequestParam(required = false) String token,
                                            Model model, RedirectAttributes redirectAttributes) {
 
-        Optional<PasswordResetToken> tokenOpt = tokenRepository.findByToken(token);
+        Optional<PasswordResetToken> resetToken = tokenRepository.findByToken(token);
 
-        if (tokenOpt.isEmpty()) {
+        if (resetToken.isEmpty()) {
             model.addAttribute("error", "Could not find password reset token.");
-        }
-        PasswordResetToken resetToken = tokenOpt.orElseThrow(RuntimeException::new);
-
-        if (resetToken.isExpired() || resetToken.isUsed()) {
+        } else if (resetToken.get().isExpired() || resetToken.get().isUsed()) {
             redirectAttributes.addFlashAttribute("err", "Link is expired or used, please request a new password");
             return "redirect:forgot-password";
         } else {
-            model.addAttribute("token", resetToken.getToken());
+            model.addAttribute("token", resetToken.get().getToken());
         }
 
         model.addAttribute("passwordResetForm", new PasswordResetDto());

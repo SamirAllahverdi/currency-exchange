@@ -12,9 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Entity(name = "users")
 @Data
@@ -44,6 +42,7 @@ public class User implements UserDetails {
     @NotNull(message = "Email cannot be empty")
     @Size(min = 1)
     private String email;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")

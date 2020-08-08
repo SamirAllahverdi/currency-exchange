@@ -55,7 +55,7 @@ public class PasswordForgotController {
         if (result.hasErrors()) return "forgot-password";
 
         Optional<User> user = userService.findByEmail(from.getEmail());
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             result.rejectValue("email", null, "We could not find an account for that e-mail address.");
             return "forgot-password";
         }
@@ -63,10 +63,7 @@ public class PasswordForgotController {
         PasswordResetToken token = new PasswordResetToken();
 
         token.setToken(UUID.randomUUID().toString());
-        token.setUser(user.orElseThrow(() -> {
-            throw new UserNotFoundException("User not found ");
-        }));
-
+        token.setUser(user.get());
         token.setExpiryDate(10);
         tokenRepository.save(token);
 
