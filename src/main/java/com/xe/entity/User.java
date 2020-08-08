@@ -51,15 +51,6 @@ public class User implements UserDetails {
 
     private String role;
 
-//    public User(String name, String password, String matchingPassword, String mail, Collection<Exchange> exchanges) {
-//        this.fullName = name;
-//        this.password = password;
-//        this.email = mail;
-//        this.matchingPassword = matchingPassword;
-//        this.exchanges = exchanges;
-//        this.role = "USER";
-//    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>() {{
