@@ -27,7 +27,7 @@ public class UserService implements UserDetailsService {
         String encode = enc.encode(user.getPassword());
         user.setPassword(encode);
         user.setMatchingPassword(encode);
-        user.setRoles("USER");
+        user.setRole("USER");
         userRepository.save(user);
     }
 

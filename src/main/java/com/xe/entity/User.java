@@ -49,21 +49,21 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     private long id;
 
-    private String roles;
+    private String role;
 
-    public User(String name, String password, String matchingPassword, String mail, Collection<Exchange> exchanges, String... roles) {
+    public User(String name, String password, String matchingPassword, String mail, Collection<Exchange> exchanges) {
         this.fullName = name;
         this.password = password;
         this.email = mail;
         this.matchingPassword = matchingPassword;
         this.exchanges = exchanges;
-        this.roles = "USER";
+        this.role = "USER";
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>() {{
-            add((GrantedAuthority) () -> String.format("ROLES_%s", roles));
+            add((GrantedAuthority) () -> String.format("ROLES_%s", role));
         }};
     }
 
