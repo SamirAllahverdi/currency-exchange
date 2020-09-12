@@ -10,7 +10,7 @@
  Link to deployed version: https://calm-savannah-70817.herokuapp.com/
  
  **Note:**
- If you want to check forget password functionality **locally**, please write your email and password in application.properties.
+ If you want to check forget password functionality **locally**, please write your email and password corresponding places in application.properties.
  #
  Useful commands:
  - mvn clean - deletes the /target folder

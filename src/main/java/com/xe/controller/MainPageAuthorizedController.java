@@ -4,7 +4,6 @@ import com.xe.entity.User;
 import com.xe.entity.api.Exchange;
 import com.xe.enums.XCurrency;
 import com.xe.exception.InvalidPeriodException;
-import com.xe.exception.UserNotFoundException;
 import com.xe.service.ExchangeService;
 import com.xe.service.SocialUserService;
 import com.xe.service.UserService;
@@ -57,15 +56,20 @@ public class MainPageAuthorizedController {
     @GetMapping
     public String get(Principal p, Model model) {
 
-        if (p instanceof OAuth2AuthenticationToken) {
-            OAuth2AuthenticationToken user = (OAuth2AuthenticationToken) p;
-            socialUserService.addUserSocial(user);
-            model.addAttribute("name", user.getPrincipal().getAttribute("name"));
-        } else {
-            UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) p;
-            User xUserDetails = (User) user.getPrincipal();
-            model.addAttribute("name", xUserDetails.getFullName());
-        }
+
+        UserService.getUserNameFromPrincipalWithBehaviour(p,
+                () -> {
+                    OAuth2AuthenticationToken user = (OAuth2AuthenticationToken) p;
+                    socialUserService.addUserSocial(user);
+                    model.addAttribute("name", user.getPrincipal().getAttribute("name"));
+                }
+                , () -> {
+                    UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) p;
+                    User xUserDetails = (User) user.getPrincipal();
+                    model.addAttribute("name", xUserDetails.getFullName());
+                });
+
+
         return "main-page-authorized";
     }
 

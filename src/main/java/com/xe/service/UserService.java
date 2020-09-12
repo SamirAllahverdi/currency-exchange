@@ -57,6 +57,17 @@ public class UserService implements UserDetailsService {
         }
     }
 
+
+    public static void getUserNameFromPrincipalWithBehaviour(Principal p,
+                                                             Runnable behaviour1,
+                                                             Runnable behaviour2) {
+        if (p instanceof OAuth2AuthenticationToken) {
+            behaviour1.run();
+        } else {
+            behaviour2.run();
+        }
+    }
+
     @Override
     public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
         return userRepository.findByEmail(mail)
